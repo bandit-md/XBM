@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="XBM — Modular Security. Fixed Supply. Deploy-ready ERC-20 with 410 million tokens, no inflation, OpenZeppelin-based.">
+<meta property="og:title" content="XBM — Modular Security. Fixed Supply.">
+<meta property="og:description" content="Fixed-supply ERC-20. Modular Solidity. Security-first. Built for developers and capital.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#05060a">
 <title>XBM — Modular Security. Fixed Supply.</title>
 <style>
   :root {
@@ -14,98 +19,157 @@
     --muted: #94a3b8;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
   a { color: var(--cyan); text-decoration: none; }
   a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
 
+  /* Nav */
   nav {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(5,6,10,0.9);
+    background: rgba(5,6,10,0.92);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid #1e293b;
-    padding: 1rem 2rem;
+    padding: 0.9rem 1.25rem;
     display: flex; justify-content: space-between; align-items: center;
   }
-  .logo { font-weight: 800; font-size: 1.6rem; background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  nav a { margin-left: 1.5rem; color: var(--muted); font-weight: 500; }
-  nav a:hover { color: var(--cyan); text-decoration: none; }
-
-  .hero {
-    min-height: 90vh;
-    background: radial-gradient(ellipse at center, rgba(0,240,255,0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.2) 0%, transparent 40%),
-                var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    text-align: center; padding: 4rem 1.5rem;
-  }
-  .hero-content { max-width: 800px; }
-  .badge {
-    display: inline-block; background: rgba(0,240,255,0.15);
-    color: var(--cyan); border: 1px solid var(--cyan);
-    padding: 0.35rem 0.9rem; border-radius: 999px;
-    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
-    margin-bottom: 1.5rem;
-  }
-  h1 {
-    font-size: clamp(3rem, 8vw, 5.5rem);
-    font-weight: 800; line-height: 1;
+  .logo {
+    font-weight: 800; font-size: 1.5rem;
     background: linear-gradient(90deg, var(--cyan), var(--purple));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 1rem;
+    background-clip: text;
   }
-  .subtitle { font-size: 1.4rem; color: var(--muted); margin-bottom: 2.5rem; }
-  .cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .nav-links {
+    display: flex; align-items: center; gap: 1.25rem;
+  }
+  .nav-links a {
+    color: var(--muted); font-weight: 500; font-size: 0.95rem;
+    padding: 0.4rem 0.2rem;
+  }
+  .nav-links a:hover { color: var(--cyan); text-decoration: none; }
+
+  /* Mobile menu button */
+  .menu-toggle {
+    display: none;
+    background: none; border: none; color: var(--text);
+    font-size: 1.6rem; cursor: pointer; padding: 0.25rem;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 88vh;
+    background: radial-gradient(ellipse at center, rgba(0,240,255,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(168,85,247,0.18) 0%, transparent 45%),
+                var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 3rem 1.25rem 4rem;
+  }
+  .hero-content { max-width: 720px; }
+  .badge {
+    display: inline-block; background: rgba(0,240,255,0.12);
+    color: var(--cyan); border: 1px solid var(--cyan);
+    padding: 0.35rem 0.85rem; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.4px;
+    margin-bottom: 1.25rem;
+  }
+  h1 {
+    font-size: clamp(2.8rem, 9vw, 5.2rem);
+    font-weight: 800; line-height: 0.95;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+  .subtitle {
+    font-size: clamp(1.1rem, 3.5vw, 1.35rem);
+    color: var(--muted); margin-bottom: 2rem;
+  }
+  .cta { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
   .btn {
-    padding: 0.95rem 1.9rem; border-radius: 10px; font-weight: 600;
-    display: inline-block; transition: all 0.2s;
+    padding: 0.85rem 1.6rem; border-radius: 10px; font-weight: 600;
+    display: inline-block; transition: all 0.2s; font-size: 0.95rem;
   }
   .btn-primary { background: var(--cyan); color: #000; }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,240,255,0.35); text-decoration: none; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,240,255,0.35); text-decoration: none; }
   .btn-outline { border: 2px solid var(--purple); color: var(--purple); }
   .btn-outline:hover { background: var(--purple); color: #fff; text-decoration: none; }
 
-  section { padding: 5rem 1.5rem; max-width: 1200px; margin: 0 auto; }
-  h2 { font-size: 2.5rem; text-align: center; margin-bottom: 0.5rem; }
-  .section-sub { text-align: center; color: var(--muted); margin-bottom: 3rem; font-size: 1.15rem; }
+  /* Sections */
+  section { padding: 4rem 1.25rem; max-width: 1100px; margin: 0 auto; }
+  h2 { font-size: clamp(1.8rem, 5vw, 2.4rem); text-align: center; margin-bottom: 0.4rem; }
+  .section-sub { text-align: center; color: var(--muted); margin-bottom: 2.5rem; font-size: 1.05rem; }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
   .card {
     background: var(--card); border: 1px solid #1e293b;
-    border-radius: 16px; padding: 2rem; transition: transform 0.2s, border-color 0.2s;
+    border-radius: 14px; padding: 1.5rem;
+    transition: transform 0.2s, border-color 0.2s;
   }
-  .card:hover { transform: translateY(-4px); border-color: var(--cyan); }
-  .card h3 { font-size: 1.45rem; margin-bottom: 0.75rem; color: var(--cyan); }
-  .card p, .card li { color: var(--muted); }
+  .card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+  .card h3 { font-size: 1.3rem; margin-bottom: 0.6rem; color: var(--cyan); }
+  .card p, .card li { color: var(--muted); font-size: 0.95rem; }
+  .card ul { padding-left: 1.1rem; }
 
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: center; }
-  .stat { background: var(--card); border-radius: 16px; padding: 2rem; border: 1px solid #1e293b; }
-  .stat-value { font-size: 2.4rem; font-weight: 800; background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .stat-label { color: var(--muted); margin-top: 0.5rem; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; text-align: center; }
+  .stat { background: var(--card); border-radius: 14px; padding: 1.5rem 1rem; border: 1px solid #1e293b; }
+  .stat-value {
+    font-size: clamp(1.8rem, 5vw, 2.3rem); font-weight: 800;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label { color: var(--muted); margin-top: 0.4rem; font-size: 0.9rem; }
 
-  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-  @media (max-width: 800px) { .split { grid-template-columns: 1fr; } }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
   footer {
-    border-top: 1px solid #1e293b; padding: 3rem 1.5rem; text-align: center;
-    color: var(--muted); margin-top: 4rem;
+    border-top: 1px solid #1e293b; padding: 2.5rem 1.25rem; text-align: center;
+    color: var(--muted); margin-top: 2rem;
   }
-  .ticker { font-size: 2rem; font-weight: 800; color: var(--cyan); margin-bottom: 0.5rem; }
+  .ticker { font-size: 1.6rem; font-weight: 800; color: var(--cyan); margin-bottom: 0.4rem; }
+
+  /* Mobile */
+  @media (max-width: 700px) {
+    .nav-links {
+      display: none;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(5,6,10,0.98);
+      flex-direction: column; padding: 1rem 1.25rem 1.25rem;
+      border-bottom: 1px solid #1e293b; gap: 0.5rem;
+    }
+    .nav-links.open { display: flex; }
+    .menu-toggle { display: block; }
+    .hero { min-height: 80vh; padding: 2.5rem 1rem 3rem; }
+    section { padding: 3rem 1rem; }
+    .split { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 400px) {
+    .stats { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo">XBM</div>
-  <div>
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#builders">Builders</a>
-    <a href="#capital">Capital</a>
-    <a href="https://github.com/bandit-md/XBM">GitHub</a>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <div class="nav-links">
+    <a href="#tokenomics" onclick="document.querySelector('.nav-links').classList.remove('open')">Tokenomics</a>
+    <a href="#builders" onclick="document.querySelector('.nav-links').classList.remove('open')">Builders</a>
+    <a href="#capital" onclick="document.querySelector('.nav-links').classList.remove('open')">Capital</a>
+    <a href="https://github.com/bandit-md/XBM" target="_blank" rel="noopener">GitHub</a>
   </div>
 </nav>
 
@@ -116,7 +180,7 @@
     <p class="subtitle">Modular Solidity. Security-first.<br>410 million tokens. No more. Ever.</p>
     <div class="cta">
       <a href="#tokenomics" class="btn btn-primary">Tokenomics</a>
-      <a href="https://github.com/bandit-md/XBM" class="btn btn-outline" target="_blank">Source</a>
+      <a href="https://github.com/bandit-md/XBM" class="btn btn-outline" target="_blank" rel="noopener">Source</a>
     </div>
   </div>
 </section>
@@ -138,8 +202,8 @@
   <div class="split">
     <div class="card" id="builders">
       <h3>For Developers</h3>
-      <p style="margin-bottom:1rem;">Modular OpenZeppelin-based ERC-20. Clean, auditable, deploy-ready.</p>
-      <ul style="padding-left:1.2rem;">
+      <p style="margin-bottom:0.75rem;">Modular OpenZeppelin-based ERC-20. Clean, auditable, deploy-ready.</p>
+      <ul>
         <li>Pausable emergency controls</li>
         <li>Ownable + recovery functions</li>
         <li>C++ / Python security tooling</li>
@@ -148,8 +212,8 @@
     </div>
     <div class="card" id="capital">
       <h3>For Capital</h3>
-      <p style="margin-bottom:1rem;">Fixed supply. No dilution. Transparent mechanics.</p>
-      <ul style="padding-left:1.2rem;">
+      <p style="margin-bottom:0.75rem;">Fixed supply. No dilution. Transparent mechanics.</p>
+      <ul>
         <li>No mint after deployment</li>
         <li>Clear ownership model</li>
         <li>Emergency pause capability</li>
@@ -173,8 +237,8 @@
 <footer>
   <div class="ticker">XBM</div>
   <p>Modular Security. Fixed Supply. Built for Builders & Capital.</p>
-  <p style="margin-top:1rem; font-size:0.9rem;">410,000,000 total supply • 18 decimals • ERC-20</p>
-  <p style="margin-top:0.5rem;"><a href="https://github.com/bandit-md/XBM">View Source on GitHub</a></p>
+  <p style="margin-top:0.75rem; font-size:0.85rem;">410,000,000 total supply • 18 decimals • ERC-20</p>
+  <p style="margin-top:0.4rem;"><a href="https://github.com/bandit-md/XBM">View Source on GitHub</a></p>
 </footer>
 
 </body>
