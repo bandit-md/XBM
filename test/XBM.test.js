@@ -11,7 +11,7 @@ describe("XBM Token", function () {
 
   beforeEach(async function () {
     [owner, addr1, addr2] = await ethers.getSigners();
-    
+
     const XBM = await ethers.getContractFactory("XBM");
     xbm = await XBM.deploy(owner.address);
     await xbm.waitForDeployment();
@@ -57,10 +57,19 @@ describe("XBM Token", function () {
       await expect(
         xbm.transfer(addr1.address, 100)
       ).to.be.revertedWithCustomError(xbm, "EnforcedPause");
-      
+
       await xbm.unpause();
       await xbm.transfer(addr1.address, 100);
       expect(await xbm.balanceOf(addr1.address)).to.equal(100);
+    });
+
+    it("Should pause transferFrom", async function () {
+      const amount = ethers.parseUnits("1000", 18);
+      await xbm.approve(addr1.address, amount);
+      await xbm.pause();
+      await expect(
+        xbm.connect(addr1).transferFrom(owner.address, addr2.address, amount)
+      ).to.be.revertedWithCustomError(xbm, "EnforcedPause");
     });
 
     it("Only owner can pause", async function () {
@@ -71,17 +80,44 @@ describe("XBM Token", function () {
   });
 
   describe("Recovery", function () {
-    it("Should recover ETH", async function () {
+    it("Should recover ETH and emit event", async function () {
+      const sendAmount = ethers.parseEther("1.0");
       await owner.sendTransaction({
         to: await xbm.getAddress(),
-        value: ethers.parseEther("1.0")
+        value: sendAmount
       });
-      
-      const ownerBalanceBefore = await ethers.provider.getBalance(owner.address);
-      await xbm.recoverETH();
-      const ownerBalanceAfter = await ethers.provider.getBalance(owner.address);
-      
-      expect(ownerBalanceAfter).to.be.gt(ownerBalanceBefore);
+
+      await expect(xbm.recoverETH())
+        .to.emit(xbm, "ETHRecovered")
+        .withArgs(sendAmount);
+    });
+
+    it("Should recover ERC20 tokens", async function () {
+      // Deploy a mock ERC20
+      const MockERC20 = await ethers.getContractFactory("MockERC20");
+      const mock = await MockERC20.deploy("Mock", "MCK", ethers.parseUnits("1000", 18));
+      await mock.waitForDeployment();
+
+      // Send mock tokens to XBM contract
+      await mock.transfer(await xbm.getAddress(), ethers.parseUnits("100", 18));
+
+      const ownerBalanceBefore = await mock.balanceOf(owner.address);
+      await xbm.recoverERC20(await mock.getAddress(), ethers.parseUnits("100", 18));
+      const ownerBalanceAfter = await mock.balanceOf(owner.address);
+
+      expect(ownerBalanceAfter).to.equal(ownerBalanceBefore + ethers.parseUnits("100", 18));
+    });
+
+    it("Cannot recover own XBM tokens", async function () {
+      await expect(
+        xbm.recoverERC20(await xbm.getAddress(), 1)
+      ).to.be.revertedWith("Cannot recover XBM");
+    });
+
+    it("Only owner can recover", async function () {
+      await expect(
+        xbm.connect(addr1).recoverETH()
+      ).to.be.revertedWithCustomError(xbm, "OwnableUnauthorizedAccount");
     });
   });
 });
